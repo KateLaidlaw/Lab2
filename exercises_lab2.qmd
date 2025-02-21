@@ -8,10 +8,10 @@ editor: visual
 install.packages("tidyverse")
 tree_dat <- read.csv("tree_dat.csv")
 ```
+
 ```{r}
 library(tidyverse)
 ```
-
 
 ```{r}
 library(dplyr)
@@ -123,6 +123,7 @@ selected_data <- tree_dat |>
   select(contains("ID"), contains("stand"))|>
   glimpse()
 ```
+
 ```{r}
 #13
 #Looking back at the data dictionary, rename rad_inc and inc to include _[unit] in the name. Unlike earlier options, be sure that this renaming is permanent, and stays with your data.frame (e.g. <-). Use glimpse to view your new data.frame.
@@ -136,6 +137,7 @@ tree_dat <- tree_dat |>
 ls(tree_dat)
 
 ```
+
 ```{r}
 #14
 #A key measurement in forestry is “basal area column”. The metric is computed with the formula:
@@ -169,6 +171,7 @@ tree_dat <- tree_dat|>
 tree_dat |>
 count(established)
 ```
+
 ```{r}
 #16
 #Use mutate and case_when to add a new column to you data.frame that classifies each tree into the proper DBH_class. Once done, limit your dataset to the year 2007 and report the number of each class with count.
@@ -186,6 +189,7 @@ tree_dat |>
 colnames(tree_dat)
 
 ```
+
 ```{r}
 #17
 #Compute the mean DBH (in cm) and standard deviation of DBH (in cm) for all trees in 2007. Explain the values you found and their statistical meaning.
@@ -224,7 +228,6 @@ tree_dat |>
 
 print(tree_dat)
 ```
-
 
 ```{r}
 #20
@@ -278,8 +281,11 @@ print("Top 3 slowest growing species:")
 print(slowest_growth)
 
 ```
+
 ```{r}
 #Lastly, find and include an image of the fastest growing species. Add the image to your images directory.
+
+
 ```
 
-
+![Quaking Aspen: the fastest growing tree.](images/blog-aspen.png)
