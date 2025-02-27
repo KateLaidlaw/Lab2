@@ -5,15 +5,11 @@ editor: visual
 ---
 
 ```{r}
-install.packages("tidyverse")
 tree_dat <- read.csv("tree_dat.csv")
 ```
 
 ```{r}
 library(tidyverse)
-```
-
-```{r}
 library(dplyr)
 ```
 
@@ -64,9 +60,6 @@ tree_dat %>%
 oldest_tree <-tree_dat %>%
   slice_max(order_by = age, n=5)
 
-tree_dat %>%
-  filter(year == 2001)
-
 print(oldest_tree)
 ```
 
@@ -75,7 +68,8 @@ print(oldest_tree)
 # Using slice_sample, how many trees are in a 30% sample of those recorded in 2002?
 tree_dat %>%
   filter(year == 2002) %>%
-  slice_sample(n = round(nrow(tree_dat)* .30,0))
+  slice_sample(n = round(nrow(tree_dat)* .30,0)) %>% 
+  glimpse()
 ```
 
 ```{r}
@@ -178,13 +172,13 @@ count(established)
 
 tree_dat |> 
   mutate(
-    DBH = case_when(
+    DBH_class = case_when(
       DBH <= 10 ~ "small",
       DBH > 10 & DBH <= 20 ~ "medium",
       DBH > 20 ~ "big",
       TRUE ~ NA_character_)) |>
   filter(year == 2007) |>
-  count(DBH) 
+  count(DBH_class) 
 
 colnames(tree_dat)
 
@@ -194,14 +188,16 @@ colnames(tree_dat)
 #17
 #Compute the mean DBH (in cm) and standard deviation of DBH (in cm) for all trees in 2007. Explain the values you found and their statistical meaning.
 
-tree_dat |>
+t2007 = tree_dat |>
   filter(year == 2007) 
-  mean_DBH <- mean(tree_dat$DBH) 
-  sd_DBH <- sd(tree_dat$DBH) 
-  print(tree_dat)
+(mean_DBH <- mean(t2007$DBH, na.rm = TRUE))
+sd_DBH <- sd(t2007$DBH) 
+
   
 #The mean DBH is ~11.532cm, and the standard deviation of DBH is ~6.468. This means that the mean diameter breast height of all trees in 2007 is roughly 11.532cm, and the standard deviation of this statistic is roughly 6.468. This means that there the actual mean could fall anywhere 6.468 below or above the calculated mean.
 ```
+
+The mean is `r mean_DBH`.
 
 ```{r}
 #18
@@ -226,7 +222,7 @@ tree_dat |>
     second_year = max(year)
   )
 
-print(tree_dat)
+
 ```
 
 ```{r}
@@ -239,7 +235,6 @@ tree_dat |>
             .groups = "drop") |>
   filter(unique_years == max(unique_years))
 
-print(tree_dat)
 
 ```
 
@@ -250,7 +245,6 @@ print(tree_dat)
 
 #Use a combination of dplyr verbs to compute these values and report the 3 species with the fastest growth, and the 3 species with the slowest growth. (** You will need to use either lag() or diff() in your compuation. You can learn more about each in the Help pages)
 
-?lag
 avg_growth <- tree_dat |>
   arrange(treeID, year) |> 
   group_by(treeID, species) |>
